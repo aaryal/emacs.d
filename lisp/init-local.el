@@ -57,4 +57,18 @@
 (add-to-list 'auto-mode-alist '("\\.yaws\\'" . erlang-mode))
 (add-to-list 'auto-mode-alist '("\\.dtl\\'" . html-mode))
 
+
+;;; redefining the flycheck method to use the include path (hardcoded for now)
+
+(flycheck-define-checker erlang
+  "An Erlang syntax checker using the Erlang interpreter.
+
+See URL `http://www.erlang.org/'."
+  :command ("erlc" "-o" temporary-directory "-Wall" "-I" "../include"  source)
+  :error-patterns
+  ((warning line-start (file-name) ":" line ": Warning:" (message) line-end)
+   (error line-start (file-name) ":" line ": " (message) line-end))
+  :modes erlang-mode)
+
+
 (provide 'init-local)
